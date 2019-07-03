@@ -77,8 +77,7 @@ public class EvenSimplerTiledModel : MonoBehaviour
 
         while(m_checkingTileStates.Count != 0)
         {
-            random = Random.Range(0, m_checkingTileStates.Count);
-            tileState = m_checkingTileStates[random];
+            tileState = m_checkingTileStates[0];
             GetValidTileType(tileState);
 
             if(tileState.observed)
@@ -101,6 +100,7 @@ public class EvenSimplerTiledModel : MonoBehaviour
             }
             else
             {
+                Debug.LogErrorFormat("Break at x = {0}, y = {1}", tileState.x, tileState.y);
                 break;
             }
         }
@@ -121,6 +121,11 @@ public class EvenSimplerTiledModel : MonoBehaviour
         {
             for(int y = 0; y < mapSize.y; y++)
             {
+                if(!m_tileStates[x, y].observed)
+                {
+                    continue;
+                }
+
                 cacheGameObject = GameObject.Instantiate(tiles[(int)m_tileStates[x, y].tileType]);
                 cacheGameObject.transform.position = new Vector3(x - mapSize.x * 0.5f + 0.5f, y - mapSize.y * 0.5f + 0.5f, 0);
                 m_tiles.Add(cacheGameObject);
